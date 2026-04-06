@@ -1,0 +1,9 @@
+## Interface: 120001
+## Name: BreakSync
+## Title: |cff45D388BreakSync|r
+## Notes: Break timer bar — works without DBM or BigWigs. Syncs with both.
+## Author: BreakSync
+## Version: 0.0.0
+## SavedVariables: BreakSyncDB
+
+embeds.xml
