@@ -3,7 +3,7 @@
 ## Title: |cff45D388BreakSync|r
 ## Notes: Break timer bar — works without DBM or BigWigs. Syncs with both.
 ## Author: BreakSync
-## Version: 0.0.2
+## Version: 0.0.3
 ## SavedVariables: BreakSyncDB
 ## IconTexture: Interface\AddOns\PintaGroupFinder\Textures\pinta
 ## X-Curse-Project-ID: 1506317
