@@ -5,6 +5,7 @@
 ## Author: BreakSync
 ## Version: 0.0.1
 ## SavedVariables: BreakSyncDB
+## IconTexture: Interface\AddOns\PintaGroupFinder\Textures\pinta
 ## X-Curse-Project-ID: 1506317
 ## X-Wago-ID: QN53LpKB
 
