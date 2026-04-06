@@ -40,7 +40,3 @@ Options panel: **Settings → AddOns → BreakSync**.
 | BigWigs only | Break timers started by BigWigs users appear on your bar automatically. |
 | DBM only | Break timers started by DBM users appear on your bar automatically. |
 | Both | Works with whichever the raid leader uses. |
-
-## References
-
-See **`references/`** for the BigWigs and DBM source files used to reverse-engineer the break timer protocol. Those files are not loaded by the addon.
