@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   call-workflow:
-    uses: Pinta365/Pinta365/workflows/addon-release.yml@main
+    uses: Pinta365/Pinta365/.github/workflows/addon-release.yml@main
     with:
       addon_name: "BreakSync"
       cf_url: "https://www.curseforge.com/wow/addons/breaksync"
