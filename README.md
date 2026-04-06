@@ -2,6 +2,11 @@
 
 Break timer bar for World of Warcraft (Retail, Patch 12.0.0+). Shows a centered on-screen timer bar when a break is called — even if you don't have DBM or BigWigs installed. Syncs with both.
 
+## Download
+
+* [Wago Addons](https://addons.wago.io/addons/breaksync)
+* [CurseForge](https://www.curseforge.com/wow/addons/breaksync)
+
 ## Features
 
 - **Standalone bar** — no DBM or BigWigs required. Works for solo players or groups.
