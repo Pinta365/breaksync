@@ -63,7 +63,7 @@ function BS.InitCommands()
             end
 
         elseif cmd == "test" then
-            BS.StartBreakBar(300, UnitName("player"))
+            BS.StartBreakBar(300, UnitName("player"), true)
             print("|cff45D388[BreakSync]|r Test break bar shown (5 min).")
 
         elseif cmd == "debug" then

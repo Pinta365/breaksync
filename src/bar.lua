@@ -25,18 +25,23 @@ local function OnUpdate(self, dt)
         running = false
         self:SetScript("OnUpdate", nil)
         bar.frame:Hide()
+        BreakSyncDB.breakTime = nil
         return
     end
     bar.statusbar:SetValue(remaining)
     bar.timeText:SetText(SecondsToString(remaining))
 end
 
-function BS.StartBreakBar(seconds, nick)
+function BS.StartBreakBar(seconds, nick, reboot)
     if not bar then return end
 
     totalSeconds = seconds
     elapsedSeconds = 0
     running = true
+
+    if not reboot then
+        BreakSyncDB.breakTime = {time(), seconds, nick}
+    end
 
     local db = BreakSyncDB
     bar.statusbar:SetMinMaxValues(0, seconds)
@@ -55,7 +60,23 @@ function BS.StopBreakBar()
         bar.frame:SetScript("OnUpdate", nil)
         bar.frame:Hide()
     end
+    BreakSyncDB.breakTime = nil
     BS.Debug("Break timer stopped")
+end
+
+function BS.ResumeBreakBar()
+    if not BreakSyncDB then return end
+    local tbl = BreakSyncDB.breakTime
+    if not tbl then return end
+    local startTimestamp, totalSec, nick = tbl[1], tbl[2], tbl[3]
+    local remaining = totalSec - (time() - startTimestamp)
+    if remaining <= 0 then
+        BreakSyncDB.breakTime = nil
+        BS.Debug("Saved break timer has expired, clearing.")
+        return
+    end
+    BS.StartBreakBar(remaining, nick, true)
+    BS.Debug("Resumed break bar:", math.ceil(remaining), "sec remaining")
 end
 
 function BS.IsBarRunning()

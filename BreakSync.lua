@@ -5,6 +5,7 @@ local addonName, BS = ...
 
 local frame = CreateFrame("Frame", "BreakSyncFrame")
 frame:RegisterEvent("ADDON_LOADED")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 frame:SetScript("OnEvent", function(self, event, name)
     if event == "ADDON_LOADED" and name == addonName then
@@ -15,5 +16,7 @@ frame:SetScript("OnEvent", function(self, event, name)
         BS.InitCommands()
         print("|cff45D388[BreakSync]|r v" .. BS.version .. " loaded. Type |cffFFFFFF/bs|r for commands.")
         self:UnregisterEvent("ADDON_LOADED")
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        BS.ResumeBreakBar()
     end
 end)
