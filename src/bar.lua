@@ -105,7 +105,7 @@ function BS.InitBar()
         tile     = false,
         edgeSize = 1,
     })
-    f:SetBackdropColor(0, 0, 0, 0.85)
+    f:SetBackdropColor(0, 0, 0, db.barAlpha)
     f:SetBackdropBorderColor(0.15, 0.15, 0.15, 1)
 
     -- Drag to reposition
@@ -128,6 +128,7 @@ function BS.InitBar()
     icon:SetPoint("LEFT", f, "LEFT", 2, 0)
     icon:SetTexture(BREAK_ICON)
     icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    if not db.barShowIcon then icon:Hide() end
 
     -- StatusBar (fills the rest of the frame)
     local sb = CreateFrame("StatusBar", nil, f)
@@ -135,7 +136,7 @@ function BS.InitBar()
     sb:SetPoint("RIGHT", f, "RIGHT", -2, 0)
     sb:SetHeight(H)
     sb:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-    sb:SetStatusBarColor(0.1, 0.6, 0.1, 1)
+    sb:SetStatusBarColor(db.barR, db.barG, db.barB, 1)
     sb:SetMinMaxValues(0, 1)
     sb:SetValue(1)
 
@@ -157,7 +158,7 @@ function BS.InitBar()
 
     -- Time remaining (right side)
     local timeText = sb:CreateFontString(nil, "OVERLAY")
-    timeText:SetFont("Fonts\\FRIZQT__.TTF", 14, "OUTLINE")
+    timeText:SetFont("Fonts\\FRIZQT__.TTF", db.barFontSize, "OUTLINE")
     timeText:SetPoint("RIGHT", sb, "RIGHT", -8, 0)
     timeText:SetText("")
 
@@ -167,8 +168,36 @@ function BS.InitBar()
         frame     = f,
         icon      = icon,
         statusbar = sb,
+        sbBg      = sbBg,
         label     = label,
         nickText  = nickText,
         timeText  = timeText,
     }
+end
+
+-- Apply appearance settings from DB to the live bar.
+function BS.RefreshBarAppearance()
+    if not bar then return end
+    local db = BreakSyncDB
+    local W = db.barWidth
+    local H = db.barHeight
+    local ICON_SIZE = H - 2
+
+    bar.frame:SetSize(W, H + 2)
+    bar.frame:SetBackdropColor(0, 0, 0, db.barAlpha)
+
+    bar.statusbar:SetHeight(H)
+    bar.statusbar:SetStatusBarColor(db.barR, db.barG, db.barB, 1)
+
+    bar.icon:SetSize(ICON_SIZE, ICON_SIZE)
+    if db.barShowIcon then
+        bar.icon:Show()
+        bar.statusbar:SetPoint("LEFT", bar.icon, "RIGHT", 2, 0)
+    else
+        bar.icon:Hide()
+        bar.statusbar:SetPoint("LEFT", bar.frame, "LEFT", 2, 0)
+    end
+
+    bar.timeText:SetFont("Fonts\\FRIZQT__.TTF", db.barFontSize, "OUTLINE")
+    BS.Debug("Bar appearance refreshed")
 end
