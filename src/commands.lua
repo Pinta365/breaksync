@@ -27,6 +27,11 @@ local function SendBreakToGroup(seconds)
     end
 end
 
+local function CanStartBreak()
+    if not IsInGroup() then return true end
+    return UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")
+end
+
 function BS.InitCommands()
     local function printHelp()
         local c = "|cff45D388[BreakSync]|r"
@@ -45,6 +50,10 @@ function BS.InitCommands()
         cmd = cmd:lower()
 
         if cmd == "break" then
+            if not CanStartBreak() then
+                print("|cff45D388[BreakSync]|r Requires raid leader or assist.")
+                return
+            end
             local minutes = tonumber(arg)
             if not minutes or minutes < 1 or minutes > 60 then
                 print("|cff45D388[BreakSync]|r Usage: /bs break <minutes> (1–60)")
@@ -56,6 +65,10 @@ function BS.InitCommands()
             SendBreakToGroup(seconds)
 
         elseif cmd == "stop" then
+            if not CanStartBreak() then
+                print("|cff45D388[BreakSync]|r Requires raid leader or assist.")
+                return
+            end
             BS.StopBreakBar()
             print("|cff45D388[BreakSync]|r Break timer cancelled.")
             if IsInGroup() then
