@@ -3,10 +3,10 @@
 local addonName, BS = ...
 
 local INDENT = 16
-local SECTION_GAP = 24
-local AFTER_HEADER = 15
-local ROW_CHECK = 28
-local ROW_SLIDER = 50
+local SECTION_GAP = 16
+local AFTER_HEADER = 18
+local ROW_CHECK = 26
+local ROW_SLIDER = 44
 
 local function sectionHeader(parent, label, yOffset)
     local fs = parent:CreateFontString(nil, "overlay", "GameFontNormal")
@@ -129,19 +129,17 @@ local function initOptionsPanel()
     y = y - 24
 
     local testBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    testBtn:SetSize(160, 22)
+    testBtn:SetSize(180, 22)
     testBtn:SetPoint("TOPLEFT", INDENT, y)
     testBtn:SetText("Test Break Bar (5 min)")
-    testBtn:SetScript("OnClick", function()
-        BS.StartBreakBar(300, UnitName("player"), true)
-    end)
-
-    local stopBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    stopBtn:SetSize(100, 22)
-    stopBtn:SetPoint("LEFT", testBtn, "RIGHT", 8, 0)
-    stopBtn:SetText("Stop Bar")
-    stopBtn:SetScript("OnClick", function()
-        BS.StopBreakBar()
+    testBtn:SetScript("OnClick", function(self)
+        if BS.IsBarRunning() then
+            BS.StopBreakBar()
+            self:SetText("Test Break Bar (5 min)")
+        else
+            BS.StartBreakBar(300, UnitName("player"), true)
+            self:SetText("Hide Test Bar")
+        end
     end)
     y = y - 36
 
@@ -185,17 +183,16 @@ local function initOptionsPanel()
         BS.RefreshBarAppearance()
     end)
 
-    -- Color swatch + label
+    -- Color swatch + label (inline on one row)
     local colorLbl = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     colorLbl:SetPoint("TOPLEFT", INDENT, y)
     colorLbl:SetText("Bar Color")
-    y = y - 18
 
-    local swatch = colorSwatch(panel, 0.1, 0.6, 0.1, y, INDENT, function(r, g, b)
+    local swatch = colorSwatch(panel, 0.1, 0.6, 0.1, y, INDENT + 68, function(r, g, b)
         BreakSyncDB.barR, BreakSyncDB.barG, BreakSyncDB.barB = r, g, b
         BS.RefreshBarAppearance()
     end)
-    y = y - 30
+    y = y - 28
 
     -- Show icon checkbox
     local iconCb
@@ -204,16 +201,9 @@ local function initOptionsPanel()
         BreakSyncDB.barShowIcon = self:GetChecked()
         BS.RefreshBarAppearance()
     end)
-    y = y - 4
 
     -- ── Style Presets ─────────────────────────────────────────────────────────
     y = sectionHeader(panel, "Style Presets", y - SECTION_GAP)
-
-    local presetLbl = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    presetLbl:SetPoint("TOPLEFT", INDENT, y)
-    presetLbl:SetText("Apply a preset style:")
-    presetLbl:SetTextColor(0.7, 0.7, 0.7)
-    y = y - 26
 
     local function applyPreset(name)
         local p = BS.stylePresets[name]
@@ -270,6 +260,7 @@ local function initOptionsPanel()
         alphaSlider:SetValue(db.barAlpha)
         swatch:SetSwatch(db.barR, db.barG, db.barB)
         iconCb:SetChecked(db.barShowIcon ~= false)
+        testBtn:SetText(BS.IsBarRunning() and "Hide Test Bar" or "Test Break Bar (5 min)")
     end
 
     panel:SetScript("OnShow", RefreshOptions)
