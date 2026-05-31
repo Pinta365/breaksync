@@ -113,6 +113,15 @@ local function initOptionsPanel()
     -- ── General ──────────────────────────────────────────────────────────────
     y = sectionHeader(panel, "General", y - SECTION_GAP)
 
+    local soundCb
+    soundCb, y = checkbox(panel, "Play sound when break ends", y)
+    soundCb:SetScript("OnClick", function(self)
+        BreakSyncDB.playEndSound = self:GetChecked()
+        if self:GetChecked() then
+            PlaySound(SOUNDKIT.ALARM_CLOCK_WARNING_3, "Master")
+        end
+    end)
+
     local debugCb
     debugCb, y = checkbox(panel, "Show debug messages", y)
     debugCb:SetScript("OnClick", function(self)
@@ -254,6 +263,7 @@ local function initOptionsPanel()
     local function RefreshOptions()
         local db = BreakSyncDB
         debugCb:SetChecked(db.debug == true)
+        soundCb:SetChecked(db.playEndSound ~= false)
         widthSlider:SetValue(db.barWidth)
         heightSlider:SetValue(db.barHeight)
         fontSlider:SetValue(db.barFontSize)

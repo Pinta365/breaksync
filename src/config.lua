@@ -20,6 +20,7 @@ BS.defaultSettings = {
     barAlpha     = 0.85,
     barFontSize  = 14,
     barShowIcon  = true,
+    playEndSound = true,
 }
 
 -- Style presets: {r, g, b, alpha, width, height, fontSize, showIcon}

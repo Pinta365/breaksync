@@ -26,6 +26,9 @@ local function OnUpdate(self, dt)
         self:SetScript("OnUpdate", nil)
         bar.frame:Hide()
         BreakSyncDB.breakTime = nil
+        if BreakSyncDB.playEndSound ~= false then
+            PlaySound(SOUNDKIT.ALARM_CLOCK_WARNING_3, "Master")
+        end
         return
     end
     bar.statusbar:SetValue(remaining)
